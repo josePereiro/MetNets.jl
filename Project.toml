@@ -3,11 +3,19 @@ uuid = "e57bcde5-101c-47b4-bac9-e79e238e37d4"
 authors = ["josePereiro <jose.pereiro.lab@gmail.com> and contributors"]
 version = "0.1.0"
 
+[deps]
+MAT = "23992714-dd62-5051-b70f-ba57cb901cac"
+Serialization = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+
 [compat]
 julia = "1.5"
 
 [extras]
+Serialization = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
 
 [targets]
-test = ["Test"]
+test = ["Test", "Serialization", "Random", "ProgressMeter"]
