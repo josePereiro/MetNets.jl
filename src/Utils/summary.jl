@@ -127,8 +127,8 @@ function _print_state_stats(io::IO, model::MetNet, state::AbstractMetState, PRIN
     end
 end
 
-function _print_state_head(io, state)
-    println(io, " Not implemented for $(typeof(state))!!!")
+function _print_state_head(io::IO, state)
+    println(io, " '_print_state_head' not implemented for $(typeof(state))!!!")
 end
 
 function _print_state_exchanges_info(io::IO, model::MetNet, state::AbstractMetState, digits = 3)
