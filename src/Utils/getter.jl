@@ -1,3 +1,4 @@
+# MetNet
 mets(metnet::MetNet) = metnet.mets
 mets(metnet::MetNet, ider::IDER_TYPE) = metnet.mets[metindex(metnet, ider)]
 
@@ -27,3 +28,26 @@ rxn_reacts(metnet::MetNet, ider::IDER_TYPE) = findall(metnet.S[:,rxnindex(metnet
 rxn_prods(metnet::MetNet, ider::IDER_TYPE) = findall(metnet.S[:,rxnindex(metnet, ider)] .> 0.0)
 
 met_rxns(metnet::MetNet, ider::IDER_TYPE) = findall(metnet.S[metindex(metnet, ider), :] .!= 0.0)
+
+# MetState
+# Interface
+av(s::AbstractMetState) = error("You must implement a 'av(s::$(typeof(s)))' method")
+va(s::AbstractMetState) = error("You must implement a 'va(s::$(typeof(s)))' method")
+
+# Commons getter interface
+for fun in [av, va]
+    fun_name = string(nameof(fun))
+
+    eval(Meta.parse(
+        """$(fun_name)(metnet::MetNet, state::AbstractMetState, ider) = 
+                $(fun_name)(state)[rxnindex(metnet, ider)]"""))
+    eval(Meta.parse(
+        """$(fun_name)(metnet::MetNet, state::AbstractMetState, iders::Vector) = 
+                [$(fun_name)(metnet, state, ider) for ider in iders]"""))
+    eval(Meta.parse(
+        """$(fun_name)(metnet::MetNet, states::Vector, ider) =
+                [$(fun_name)(metnet, state, ider) for state in states]"""))
+    eval(Meta.parse(
+        """$(fun_name)(metnets::Vector, states::Vector, ider) = 
+                [$(fun_name)(metnet, state, ider) for (metnet, state) in zip(metnets, states)]"""))
+end

@@ -1,4 +1,4 @@
-function fix_dims(metnet)
+function force_dims(metnet)
     
     function _similar_copy(col, fill, expected_len)
         curr_len = length(col)

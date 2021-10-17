@@ -4,6 +4,7 @@ import Base.==
 import Base.hash
 import Base.show
 
+# MetNet
 size(metnet::MetNet) = size(metnet.S)
 size(metnet::MetNet, dim) = size(metnet.S, dim)
 
@@ -18,3 +19,6 @@ isequal(metnet1::MetNet, metnet2::MetNet) = metnet1 == metnet2
 hash(m::MetNet, h = 0) = hash((:MetNet, m.S, m.b, m.lb, m.ub), h)
 
 show(io::IO, m::MetNet) = summary(io, m)
+
+# AbstractMetState
+show(io::IO, s::AbstractMetState) = summary(io, s)

@@ -2,7 +2,7 @@ const WARN_COLOR = :yellow
 const INFO_COLOR = :blue
 const ERROR_COLOR = :red
 
-function _print_summary_head(io::IO = stdout)
+function _print_summary_head(io::IO)
     print(io, "SUMMARY (color code: ")
     printstyled(io, "warning", color = WARN_COLOR)
     printstyled(io, ", info", color = INFO_COLOR)
@@ -107,3 +107,44 @@ function summary(io::IO, model::MetNet, ider::IDER_TYPE)
     catch end
 end
 summary(model::MetNet, ider::IDER_TYPE) = summary(stdout, model, ider)
+
+function summary(io::IO, model::MetNet, state::AbstractMetState;
+        PRINT_MAX = 50, 
+        digits = 4)
+    _print_summary_head(io)
+    _print_state_head(io, state)
+    _print_state_stats(io, model, state, PRINT_MAX)
+    _print_state_exchanges_info(model, state, digits)
+end
+summary(model::MetNet, state::AbstractMetState) = summary(stdout, model, state)
+
+function _print_state_stats(io::IO, model::MetNet, state::AbstractMetState, PRINT_MAX)
+    println(io, "State stats:")
+    av_ = av(state)
+    va_ = va(state)
+    for (name, col) in zip(["av", "va"], [av_, va_])
+        _print_col_summary(io, col, name; expected_l = size(model, 2), PRINT_MAX)
+    end
+end
+
+function _print_state_head(io, state)
+    println(io, " Not implemented for $(typeof(state))!!!")
+end
+
+function _print_state_exchanges_info(io::IO, model::MetNet, state::AbstractMetState, digits = 3)
+    println(io, "Exchange info:")
+    exchs_ = model.rxns[exchanges(model)] |> sort
+    for sense in [1, -1]
+        for ider in exchs_
+            av_ = av(model, state, ider)
+            if sense * av_ > 0
+                av_ = round(av_, digits = digits)
+                va_ = round(va(model, state, ider), digits = digits)
+                rstr = rxn_str(model, ider)
+                rbounds = round.(bounds(model, ider), digits = digits)
+                printstyled(io, " $ider => av: $av_, va: $va_, bounds: $(rbounds), eq: $(rstr)\n", color = INFO_COLOR)
+            end
+        end
+        println(io)
+    end
+end
