@@ -34,6 +34,9 @@ met_rxns(metnet::MetNet, ider::IDER_TYPE) = findall(metnet.S[metindex(metnet, id
 av(s::AbstractMetState) = error("You must implement a 'av(s::$(typeof(s)))' method")
 va(s::AbstractMetState) = error("You must implement a 'va(s::$(typeof(s)))' method")
 
+av(s::Vector{<:Real}) = s
+va(s::Vector{<:Real}) = s
+
 # Commons getter interface
 for fun in [av, va]
     fun_name = string(nameof(fun))
