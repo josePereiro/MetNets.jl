@@ -2,6 +2,7 @@ module MetNets
 
     import MAT
     import SparseArrays
+    import Statistics: mean
     
     using Serialization
 
