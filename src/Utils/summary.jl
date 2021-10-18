@@ -114,7 +114,7 @@ function summary(io::IO, model::MetNet, state::AbstractMetState;
     _print_summary_head(io)
     _print_state_head(io, state)
     _print_state_stats(io, model, state, PRINT_MAX)
-    _print_state_exchanges_info(model, state, digits)
+    _print_state_exchanges_info(io, model, state, digits)
 end
 summary(model::MetNet, state::AbstractMetState) = summary(stdout, model, state)
 

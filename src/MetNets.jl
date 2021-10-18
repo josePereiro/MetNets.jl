@@ -2,6 +2,7 @@ module MetNets
 
     import MAT
     import SparseArrays
+    import SparseArrays: AbstractSparseArray
     import Statistics: mean
     
     using Serialization
@@ -47,6 +48,7 @@ module MetNets
     include("Utils/summary.jl")
     include("Utils/TNmarginal.jl")
     include("Utils/update.jl")
+    include("Utils/utils.jl")
     include("Utils/well_scaled_model.jl")
     
     # Test

@@ -67,14 +67,6 @@ end
 # Helpers
 MetNet(;kwargs...) = MetNet{Float64}(;kwargs...)
 
-function to_symbol_dict(srcdict::Dict)
-    dict = Dict()
-    for (k, v) in srcdict
-        dict[Symbol(k)] = v
-    end
-    return dict
-end
-
 # For COBRA .mat files use reshape
 function MetNet(model_dict::Dict; reshape = false) 
     net = to_symbol_dict(model_dict)
