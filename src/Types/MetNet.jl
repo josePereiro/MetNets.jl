@@ -76,22 +76,18 @@ end
 
 """
     Create a new MetNet from a template but overwriting the fields
-    of the template with the given as kwargs
+    of the template with the given as kwargs.
+    The returned MetNet will share the non-overwritten fields.
 """
-function MetNet(metnet::MetNet; reshape = false, net...)
-    net = Dict(net)
+function MetNet(template::MetNet; to_overwrite...)
+    new_metnet_dict = Dict{Symbol, Any}(to_overwrite)
 
-    metnet_dict = Dict()
-    for field in fieldnames(typeof(metnet))
-        metnet_dict[field] = getfield(metnet, field)
+    for field in fieldnames(typeof(template))
+        haskey(new_metnet_dict, field) && continue # avoid use the template version
+        new_metnet_dict[field] = getfield(template, field)
     end
     
-    for (k, v) in metnet_dict
-        if haskey(net, k)
-            metnet_dict[k] = net[k]
-        end
-    end
-    return MetNet(metnet_dict; reshape = reshape)
+    return MetNet(new_metnet_dict; reshape = false)
 end
 
 # For compatibility with cobra mat models

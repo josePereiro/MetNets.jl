@@ -2,9 +2,10 @@ module MetNets
 
     import MAT
     import SparseArrays
-    import SparseArrays: AbstractSparseArray
+    import SparseArrays: AbstractSparseArray, sparse
     import Statistics: mean
     
+    using ProgressMeter
     using Serialization
 
     # Types

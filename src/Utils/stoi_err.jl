@@ -1,11 +1,11 @@
-stoi_err(S::Matrix, v::Vector, b::Vector) = S * v - b
-stoi_err(S::Matrix, v::Vector, b::Vector, meti::Int) = @views S[meti, :]' * v - b[meti]
+stoi_err(S::AbstractMatrix, v::AbstractVector, b::AbstractVector) = S * v - b
+stoi_err(S::AbstractMatrix, v::AbstractVector, b::AbstractVector, meti::Int) = @views S[meti, :]' * v - b[meti]
 
-stoi_err(metnet::MetNet, state::AbstractMetState) = stoi_err(metnet.S, av(state), metnet.b)
-stoi_err(metnet::MetNet, state::AbstractMetState, ider) = 
+stoi_err(metnet::MetNet, state) = stoi_err(metnet.S, av(state), metnet.b)
+stoi_err(metnet::MetNet, state, ider) = 
     stoi_err(metnet.S, av(state), metnet.b, metindex(metnet, ider))
 
-function norm_stoi_err(net::MetNet, v::Vector, meti::Int; 
+function norm_stoi_err(net::MetNet, v::AbstractVector, meti::Int; 
         normfun = (metv) -> mean(abs, metv)
     )
     rxnis = MetNets.met_rxns(net, meti)
@@ -17,11 +17,11 @@ function norm_stoi_err(net::MetNet, v::Vector, meti::Int;
     return err / ref
 end
 
-norm_stoi_err(net::MetNet, v::Vector; kwargs...) = 
+norm_stoi_err(net::MetNet, v::AbstractVector; kwargs...) = 
     [norm_stoi_err(net, v, meti; kwargs...) for meti in eachindex(net.mets)]
 
-norm_stoi_err(net::MetNet, state::AbstractMetState, meti; kwargs...) = 
+norm_stoi_err(net::MetNet, state, meti; kwargs...) = 
     norm_stoi_err(net, av(state), metindex(net, meti); kwargs...)
 
-norm_stoi_err(net::MetNet, state::AbstractMetState; kwargs...) = 
+norm_stoi_err(net::MetNet, state; kwargs...) = 
     norm_stoi_err(net, av(state); kwargs...)

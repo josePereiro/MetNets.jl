@@ -1,9 +1,12 @@
 """
-    Findall the reaction that transforms the same elements
-    if we define: r1 = 2A -> 2B, r2 = B <-> A, r3 = A <- B, r4 = A + B -> 
-    the method will returns [[r1, r2, r3]]
-    This method only use the information in the binary S. 
-    Bounds are not relevant either.
+    similar_rxns(model::MetNet, iders = eachindex(model.rxns); verbose = true)
+
+Findall the reaction that transforms the same elements
+if we define: r1 = 2A -> 2B, r2 = B <-> A, r3 = A <- B, r4 = A + B -> 
+the method will returns [[r1, r2, r3]]
+This method only use the information in the binary S. 
+Bounds are not relevant either.
+
 """
 function similar_rxns(model::MetNet, 
         iders = eachindex(model.rxns); verbose = true)
