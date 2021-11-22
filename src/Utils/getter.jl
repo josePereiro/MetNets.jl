@@ -38,19 +38,18 @@ av(s::Vector{<:Real}) = s
 va(s::Vector{<:Real}) = s
 
 # Commons getter interface
-for fun in [av, va]
-    fun_name = string(nameof(fun))
+for fun_name in [:av, :va]
 
-    eval(Meta.parse(
-        """$(fun_name)(metnet::MetNet, state::AbstractMetState, ider) = 
-                $(fun_name)(state)[rxnindex(metnet, ider)]"""))
-    eval(Meta.parse(
-        """$(fun_name)(metnet::MetNet, state::AbstractMetState, iders::Vector) = 
-                [$(fun_name)(metnet, state, ider) for ider in iders]"""))
-    eval(Meta.parse(
-        """$(fun_name)(metnet::MetNet, states::Vector, ider) =
-                [$(fun_name)(metnet, state, ider) for state in states]"""))
-    eval(Meta.parse(
-        """$(fun_name)(metnets::Vector, states::Vector, ider) = 
-                [$(fun_name)(metnet, state, ider) for (metnet, state) in zip(metnets, states)]"""))
+    @eval begin
+        $(fun_name)(state::AbstractMetState, idxs) = 
+            $(fun_name)(state)[idxs]
+        $(fun_name)(metnet::MetNet, state::AbstractMetState, ider) = 
+            $(fun_name)(state)[rxnindex(metnet, ider)]    
+        $(fun_name)(metnet::MetNet, state::AbstractMetState, iders::Vector) = 
+            [$(fun_name)(metnet, state, ider) for ider in iders]
+        $(fun_name)(metnet::MetNet, states::Vector, ider) =
+            [$(fun_name)(metnet, state, ider) for state in states]
+        $(fun_name)(metnets::Vector, states::Vector, ider) = 
+            [$(fun_name)(metnet, state, ider) for (metnet, state) in zip(metnets, states)]
+    end
 end
