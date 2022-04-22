@@ -14,9 +14,9 @@ function ==(metnet1::MetNet, metnet2::MetNet)
     metnet1.rxns == metnet2.rxns && metnet1.rxns == metnet2.rxns
 end
 
-isequal(metnet1::MetNet, metnet2::MetNet) = metnet1 == metnet2
+isequal(metnet1::MetNet, metnet2::MetNet) = (metnet1 == metnet2)
 
-hash(m::MetNet, h = 0) = hash((:MetNet, m.S, m.b, m.lb, m.ub))
+hash(m::MetNet, h::Int = 0) = hash((:MetNet, m.S, m.b, m.lb, m.ub, h))
 
 show(io::IO, m::MetNet) = summary(io, m)
 
