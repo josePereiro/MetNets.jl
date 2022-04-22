@@ -16,7 +16,7 @@ end
 
 isequal(metnet1::MetNet, metnet2::MetNet) = metnet1 == metnet2
 
-hash(m::MetNet, h = 0) = hash((:MetNet, m.S, m.b, m.lb, m.ub), h)
+hash(m::MetNet, h = 0) = hash((:MetNet, m.S, m.b, m.lb, m.ub))
 
 show(io::IO, m::MetNet) = summary(io, m)
 
